@@ -13,6 +13,12 @@
       padding: 0;
     }
 
+    html, body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
     body {
       font-family: Arial, Helvetica, sans-serif;
       background: #f3f6fc;
@@ -21,8 +27,10 @@
     }
 
     .container {
+      width: 100%;
       max-width: 1100px;
-      margin: auto;
+      margin: 0 auto;
+      min-width: 0;
     }
 
     .header {
@@ -31,12 +39,12 @@
       padding: 32px;
       border-radius: 20px;
       margin-bottom: 24px;
-      box-shadow: 0 12px 30px rgba(37, 67, 150, 0.18);
+      box-shadow: 0 12px 30px rgba(37,67,150,.18);
     }
 
     .tag {
       display: inline-block;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255,255,255,.15);
       padding: 7px 12px;
       border-radius: 30px;
       font-size: 12px;
@@ -56,33 +64,34 @@
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 16px;
       margin-bottom: 24px;
     }
 
     .stat-card {
+      min-width: 0;
       background: white;
       padding: 22px;
       border-radius: 16px;
       border: 1px solid #e3e8f2;
-      box-shadow: 0 5px 16px rgba(20, 35, 70, 0.04);
+      box-shadow: 0 5px 16px rgba(20,35,70,.04);
     }
 
-    .stat-card .label {
+    .label {
       color: #64708a;
       font-size: 13px;
       margin-bottom: 12px;
     }
 
-    .stat-card .number {
+    .number {
       font-size: 32px;
       font-weight: 750;
       color: #2447bd;
       overflow-wrap: anywhere;
     }
 
-    .stat-card .subtext {
+    .subtext {
       color: #8490a6;
       font-size: 12px;
       margin-top: 8px;
@@ -90,12 +99,13 @@
     }
 
     .panel {
+      min-width: 0;
       background: white;
       border: 1px solid #e3e8f2;
       border-radius: 18px;
       padding: 24px;
       margin-bottom: 22px;
-      box-shadow: 0 5px 16px rgba(20, 35, 70, 0.04);
+      box-shadow: 0 5px 16px rgba(20,35,70,.04);
     }
 
     .panel h2 {
@@ -110,15 +120,16 @@
       margin-bottom: 20px;
     }
 
+    /* Desktop table */
     .table-wrap {
       width: 100%;
-      overflow-x: auto;
+      min-width: 0;
     }
 
     table {
       width: 100%;
+      table-layout: fixed;
       border-collapse: collapse;
-      min-width: 720px;
     }
 
     th {
@@ -126,15 +137,17 @@
       color: #354b83;
       text-align: left;
       font-size: 13px;
-      padding: 15px 12px;
-      white-space: nowrap;
+      padding: 14px 10px;
+      overflow-wrap: anywhere;
     }
 
     td {
-      padding: 15px 12px;
+      padding: 14px 10px;
       border-bottom: 1px solid #edf0f6;
       font-size: 14px;
       line-height: 1.5;
+      overflow-wrap: anywhere;
+      vertical-align: middle;
     }
 
     tbody tr:hover {
@@ -144,7 +157,6 @@
     .course-code {
       font-weight: 700;
       color: #233e94;
-      white-space: nowrap;
     }
 
     .course-type {
@@ -156,37 +168,48 @@
 
     .credit {
       font-weight: 700;
-      white-space: nowrap;
     }
 
     select {
+      display: block;
       width: 100%;
-      min-width: 135px;
-      padding: 11px 12px;
+      min-width: 0;
+      max-width: 100%;
+      padding: 11px 8px;
       border: 1px solid #d8dfec;
       border-radius: 9px;
       background: white;
       color: #172033;
       font-size: 14px;
       outline: none;
-      cursor: pointer;
     }
 
     select:focus {
       border-color: #4263eb;
-      box-shadow: 0 0 0 3px rgba(66, 99, 235, 0.12);
+      box-shadow: 0 0 0 3px rgba(66,99,235,.12);
     }
 
     .weighted {
       color: #2447bd;
       font-weight: 700;
-      white-space: nowrap;
     }
 
-    tfoot td {
+    .totals-summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
       background: #f7f9ff;
-      font-weight: 700;
-      border-bottom: none;
+      border: 1px solid #e3e8f2;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    .totals-summary strong {
+      color: #2447bd;
     }
 
     .buttons {
@@ -203,7 +226,7 @@
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: background .2s;
     }
 
     .primary {
@@ -233,10 +256,7 @@
       line-height: 1.7;
       color: #405078;
       font-size: 14px;
-    }
-
-    .result strong {
-      color: #2447bd;
+      overflow-wrap: anywhere;
     }
 
     .footer {
@@ -247,13 +267,19 @@
       padding: 10px 0 20px;
     }
 
+    /* MOBILE: turn each table row into a card */
     @media (max-width: 700px) {
       body {
-        padding: 16px 10px;
+        padding: 12px;
       }
 
       .header {
-        padding: 24px 20px;
+        padding: 24px 18px;
+        border-radius: 16px;
+      }
+
+      .header h1 {
+        font-size: 27px;
       }
 
       .stats {
@@ -262,15 +288,154 @@
       }
 
       .stat-card {
-        padding: 18px;
+        padding: 17px;
       }
 
-      .stat-card .number {
-        font-size: 28px;
+      .number {
+        font-size: 27px;
       }
 
       .panel {
-        padding: 17px 12px;
+        padding: 16px 12px;
+        border-radius: 15px;
+      }
+
+      .panel h2 {
+        font-size: 19px;
+      }
+
+      .table-wrap {
+        overflow: visible;
+      }
+
+      /* Hide the desktop table headings */
+      table,
+      tbody {
+        display: block;
+        width: 100%;
+      }
+
+      thead {
+        display: none;
+      }
+
+      /* Every course becomes its own card */
+      tbody tr {
+        display: block;
+        width: 100%;
+        min-width: 0;
+        margin-bottom: 14px;
+        padding: 8px 12px;
+        background: #ffffff;
+        border: 1px solid #e0e6f2;
+        border-radius: 13px;
+        box-shadow: 0 3px 10px rgba(20,35,70,.04);
+      }
+
+      tbody tr:hover {
+        background: #ffffff;
+      }
+
+      tbody td {
+        display: grid;
+        grid-template-columns: 95px minmax(0, 1fr);
+        align-items: start;
+        gap: 8px;
+        width: 100%;
+        min-width: 0;
+        padding: 11px 0;
+        border-bottom: 1px solid #edf0f6;
+        font-size: 13px;
+        text-align: left;
+      }
+
+      tbody td:last-child {
+        border-bottom: none;
+      }
+
+      /* Labels replace the desktop column headings */
+      tbody td::before {
+        content: attr(data-label);
+        color: #748099;
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1.5;
+        padding-top: 2px;
+      }
+
+      .course-code {
+        overflow-wrap: anywhere;
+      }
+
+      .course-type {
+        font-size: 11px;
+      }
+
+      .credit {
+        white-space: normal;
+      }
+
+      select {
+        width: 100%;
+        font-size: 14px;
+        padding: 11px 8px;
+      }
+
+      .weighted {
+        white-space: normal;
+      }
+
+      .totals-summary {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 14px;
+        font-size: 13px;
+      }
+
+      .buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      button {
+        padding: 13px 8px;
+        font-size: 13px;
+      }
+
+      .result {
+        padding: 14px;
+        font-size: 13px;
+      }
+    }
+
+    /* Extra-small phones */
+    @media (max-width: 360px) {
+      body {
+        padding: 8px;
+      }
+
+      .header {
+        padding: 20px 14px;
+      }
+
+      .panel {
+        padding: 12px 9px;
+      }
+
+      tbody tr {
+        padding: 6px 9px;
+      }
+
+      tbody td {
+        grid-template-columns: 78px minmax(0, 1fr);
+        gap: 6px;
+        font-size: 12px;
+      }
+
+      .buttons {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -301,13 +466,17 @@
       <div class="stat-card">
         <div class="label">Total Credits</div>
         <div class="number">19.25</div>
-        <div class="subtext">Theory and sessional courses combined</div>
+        <div class="subtext">
+          Theory and sessional courses combined
+        </div>
       </div>
 
       <div class="stat-card">
         <div class="label">Courses Selected</div>
         <div class="number" id="selectedCount">0 / 7</div>
-        <div class="subtext">Choose a grade for every course</div>
+        <div class="subtext">
+          Choose a grade for every course
+        </div>
       </div>
 
     </section>
@@ -315,33 +484,35 @@
     <section class="panel">
       <h2>Course Grades</h2>
       <p class="description">
-        Select your expected or obtained grade from each dropdown.
-        Your weighted points and GPA will update automatically.
+        Select a grade from each dropdown. Your weighted
+        points and GPA will update automatically.
       </p>
 
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Course No.</th>
-              <th>Course Name</th>
-              <th>Credit Hours</th>
-              <th>Select Grade</th>
-              <th>Weighted Points</th>
+              <th style="width: 13%">Course No.</th>
+              <th style="width: 30%">Course Name</th>
+              <th style="width: 12%">Credits</th>
+              <th style="width: 24%">Select Grade</th>
+              <th style="width: 21%">Weighted Points</th>
             </tr>
           </thead>
 
           <tbody id="courseRows"></tbody>
-
-          <tfoot>
-            <tr>
-              <td colspan="2">Total</td>
-              <td id="totalCredits">19.25</td>
-              <td id="gradeProgress">0 / 7 graded</td>
-              <td id="totalWeighted">0.00</td>
-            </tr>
-          </tfoot>
         </table>
+      </div>
+
+      <div class="totals-summary">
+        <div>
+          Total Credits:
+          <strong id="totalCredits">19.25</strong>
+        </div>
+        <div>
+          Total Weighted Points:
+          <strong id="totalWeighted">0.00</strong>
+        </div>
       </div>
 
       <div class="buttons">
@@ -361,14 +532,13 @@
 
     <div class="footer">
       Level 2, Term I · CGPA Calculator<br>
-      Grade points are based on a common 4.00 grading scale.
+      Grade points use a common 4.00 scale.
       Check your university's official grading policy.
     </div>
 
   </main>
 
   <script>
-    // Course details taken from the provided syllabus.
     const courses = [
       {
         code: "ME 247",
@@ -414,7 +584,7 @@
       }
     ];
 
-    // Common grade-point scale out of 4.00.
+    // Common 4.00 grade-point scale.
     const gradeScale = [
       { label: "A+ (4.00)", points: 4.00 },
       { label: "A (3.75)",  points: 3.75 },
@@ -435,20 +605,25 @@
 
     const courseRows = document.getElementById("courseRows");
 
-    // Generate all course rows and grade dropdowns.
     function renderCourses() {
       courseRows.innerHTML = courses.map((course, index) => `
         <tr>
-          <td>
-            <span class="course-code">${course.code}</span>
-            <span class="course-type">${course.type}</span>
+          <td data-label="Course No.">
+            <div>
+              <span class="course-code">${course.code}</span>
+              <span class="course-type">${course.type}</span>
+            </div>
           </td>
 
-          <td>${course.name}</td>
+          <td data-label="Course Name">
+            <span>${course.name}</span>
+          </td>
 
-          <td class="credit">${course.credits.toFixed(2)}</td>
+          <td data-label="Credits" class="credit">
+            ${course.credits.toFixed(2)}
+          </td>
 
-          <td>
+          <td data-label="Select Grade">
             <select
               class="grade-select"
               id="grade-${index}"
@@ -463,7 +638,10 @@
             </select>
           </td>
 
-          <td class="weighted" id="points-${index}">—</td>
+          <td data-label="Weighted Points" class="weighted"
+              id="points-${index}">
+            —
+          </td>
         </tr>
       `).join("");
 
@@ -475,7 +653,6 @@
         totalCredits.toFixed(2);
     }
 
-    // Calculate GPA using only the courses with selected grades.
     function calculateGPA() {
       let weightedPoints = 0;
       let gradedCredits = 0;
@@ -486,7 +663,9 @@
           `grade-${index}`
         ).value;
 
-        const pointsCell = document.getElementById(`points-${index}`);
+        const pointsCell = document.getElementById(
+          `points-${index}`
+        );
 
         if (gradeValue === "") {
           pointsCell.textContent = "—";
@@ -507,14 +686,11 @@
         ? weightedPoints / gradedCredits
         : null;
 
-      const allCoursesSelected = selectedCourses === courses.length;
+      const allCoursesSelected =
+        selectedCourses === courses.length;
 
-      // Update summary cards.
       document.getElementById("selectedCount").textContent =
         `${selectedCourses} / ${courses.length}`;
-
-      document.getElementById("gradeProgress").textContent =
-        `${selectedCourses} / ${courses.length} graded`;
 
       document.getElementById("totalWeighted").textContent =
         weightedPoints.toFixed(2);
@@ -529,8 +705,8 @@
           ? "All 7 courses included in the final result."
           : "Select all 7 grades to reveal your final GPA.";
 
-      // Update the result message.
-      const resultMessage = document.getElementById("resultMessage");
+      const resultMessage =
+        document.getElementById("resultMessage");
 
       if (selectedCourses === 0) {
         resultMessage.textContent =
@@ -539,7 +715,7 @@
         resultMessage.textContent =
           `Current GPA across ${selectedCourses} selected course(s): ` +
           `${gpa.toFixed(2)}. Select the remaining grades to calculate ` +
-          "your final semester GPA using all 19.25 credits.";
+          `your final semester GPA using all ${totalCredits.toFixed(2)} credits.`;
       } else {
         resultMessage.textContent =
           `Your final semester GPA is ${gpa.toFixed(2)} out of 4.00. ` +
@@ -548,7 +724,6 @@
       }
     }
 
-    // Clear all grades and return the calculator to its initial state.
     function resetCalculator() {
       document.querySelectorAll(".grade-select").forEach(select => {
         select.value = "";
@@ -567,7 +742,6 @@
       resetCalculator
     );
 
-    // Initialize the calculator.
     renderCourses();
     calculateGPA();
   </script>
