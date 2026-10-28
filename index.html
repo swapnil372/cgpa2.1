@@ -1,0 +1,575 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CGPA Calculator | Level 2, Term I</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f3f6fc;
+      color: #172033;
+      padding: 30px 16px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #15264b, #3457d5);
+      color: white;
+      padding: 32px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 12px 30px rgba(37, 67, 150, 0.18);
+    }
+
+    .tag {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 7px 12px;
+      border-radius: 30px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+
+    .header h1 {
+      font-size: clamp(25px, 4vw, 38px);
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      color: #dbe5ff;
+      line-height: 1.6;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 22px;
+      border-radius: 16px;
+      border: 1px solid #e3e8f2;
+      box-shadow: 0 5px 16px rgba(20, 35, 70, 0.04);
+    }
+
+    .stat-card .label {
+      color: #64708a;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .stat-card .number {
+      font-size: 32px;
+      font-weight: 750;
+      color: #2447bd;
+      overflow-wrap: anywhere;
+    }
+
+    .stat-card .subtext {
+      color: #8490a6;
+      font-size: 12px;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid #e3e8f2;
+      border-radius: 18px;
+      padding: 24px;
+      margin-bottom: 22px;
+      box-shadow: 0 5px 16px rgba(20, 35, 70, 0.04);
+    }
+
+    .panel h2 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .description {
+      color: #748099;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+
+    th {
+      background: #f0f4ff;
+      color: #354b83;
+      text-align: left;
+      font-size: 13px;
+      padding: 15px 12px;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 15px 12px;
+      border-bottom: 1px solid #edf0f6;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    tbody tr:hover {
+      background: #fafbff;
+    }
+
+    .course-code {
+      font-weight: 700;
+      color: #233e94;
+      white-space: nowrap;
+    }
+
+    .course-type {
+      display: block;
+      color: #8791a5;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .credit {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    select {
+      width: 100%;
+      min-width: 135px;
+      padding: 11px 12px;
+      border: 1px solid #d8dfec;
+      border-radius: 9px;
+      background: white;
+      color: #172033;
+      font-size: 14px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    select:focus {
+      border-color: #4263eb;
+      box-shadow: 0 0 0 3px rgba(66, 99, 235, 0.12);
+    }
+
+    .weighted {
+      color: #2447bd;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    tfoot td {
+      background: #f7f9ff;
+      font-weight: 700;
+      border-bottom: none;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 13px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .primary {
+      background: #3457d5;
+      color: white;
+    }
+
+    .primary:hover {
+      background: #2443b5;
+    }
+
+    .secondary {
+      background: #edf1fa;
+      color: #35415a;
+    }
+
+    .secondary:hover {
+      background: #dfe6f5;
+    }
+
+    .result {
+      background: #f6f8ff;
+      border: 1px solid #dce4ff;
+      border-radius: 12px;
+      padding: 18px;
+      margin-top: 20px;
+      line-height: 1.7;
+      color: #405078;
+      font-size: 14px;
+    }
+
+    .result strong {
+      color: #2447bd;
+    }
+
+    .footer {
+      text-align: center;
+      color: #8993a6;
+      font-size: 12px;
+      line-height: 1.7;
+      padding: 10px 0 20px;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 16px 10px;
+      }
+
+      .header {
+        padding: 24px 20px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .stat-card {
+        padding: 18px;
+      }
+
+      .stat-card .number {
+        font-size: 28px;
+      }
+
+      .panel {
+        padding: 17px 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+
+    <header class="header">
+      <span class="tag">ACADEMIC TOOL</span>
+      <h1>CGPA Calculator</h1>
+      <p>
+        Level 2, Term I — select your grades and calculate
+        your semester GPA instantly.
+      </p>
+    </header>
+
+    <section class="stats">
+
+      <div class="stat-card">
+        <div class="label">Semester GPA</div>
+        <div class="number" id="semesterGpa">—</div>
+        <div class="subtext" id="gpaStatus">
+          Select all 7 course grades for your final result.
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="label">Total Credits</div>
+        <div class="number">19.25</div>
+        <div class="subtext">Theory and sessional courses combined</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="label">Courses Selected</div>
+        <div class="number" id="selectedCount">0 / 7</div>
+        <div class="subtext">Choose a grade for every course</div>
+      </div>
+
+    </section>
+
+    <section class="panel">
+      <h2>Course Grades</h2>
+      <p class="description">
+        Select your expected or obtained grade from each dropdown.
+        Your weighted points and GPA will update automatically.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Course No.</th>
+              <th>Course Name</th>
+              <th>Credit Hours</th>
+              <th>Select Grade</th>
+              <th>Weighted Points</th>
+            </tr>
+          </thead>
+
+          <tbody id="courseRows"></tbody>
+
+          <tfoot>
+            <tr>
+              <td colspan="2">Total</td>
+              <td id="totalCredits">19.25</td>
+              <td id="gradeProgress">0 / 7 graded</td>
+              <td id="totalWeighted">0.00</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="buttons">
+        <button class="primary" id="calculateBtn" type="button">
+          Calculate GPA
+        </button>
+
+        <button class="secondary" id="resetBtn" type="button">
+          Reset All
+        </button>
+      </div>
+
+      <div class="result" id="resultMessage" aria-live="polite">
+        Select your grades to calculate your semester GPA.
+      </div>
+    </section>
+
+    <div class="footer">
+      Level 2, Term I · CGPA Calculator<br>
+      Grade points are based on a common 4.00 grading scale.
+      Check your university's official grading policy.
+    </div>
+
+  </main>
+
+  <script>
+    // Course details taken from the provided syllabus.
+    const courses = [
+      {
+        code: "ME 247",
+        name: "Engineering Mechanics-I",
+        type: "Theory",
+        credits: 3.00
+      },
+      {
+        code: "EEE 259",
+        name: "Electrical and Electronics Technology",
+        type: "Theory",
+        credits: 4.00
+      },
+      {
+        code: "Math 261",
+        name: "Vector Calculus, Matrices, Laplace Transform and Series Solution",
+        type: "Theory",
+        credits: 4.00
+      },
+      {
+        code: "ME 203",
+        name: "Engineering Thermodynamics",
+        type: "Theory",
+        credits: 3.00
+      },
+      {
+        code: "HUM²",
+        name: "Select from the prescribed courses",
+        type: "Theory",
+        credits: 3.00
+      },
+      {
+        code: "EEE 260",
+        name: "Electrical and Electronics Technology Sessional",
+        type: "Sessional",
+        credits: 1.50
+      },
+      {
+        code: "ME 204",
+        name: "Engineering Thermodynamics Sessional",
+        type: "Sessional",
+        credits: 0.75
+      }
+    ];
+
+    // Common grade-point scale out of 4.00.
+    const gradeScale = [
+      { label: "A+ (4.00)", points: 4.00 },
+      { label: "A (3.75)",  points: 3.75 },
+      { label: "A- (3.50)", points: 3.50 },
+      { label: "B+ (3.25)", points: 3.25 },
+      { label: "B (3.00)",  points: 3.00 },
+      { label: "B- (2.75)", points: 2.75 },
+      { label: "C+ (2.50)", points: 2.50 },
+      { label: "C (2.25)",  points: 2.25 },
+      { label: "D (2.00)",  points: 2.00 },
+      { label: "F (0.00)",  points: 0.00 }
+    ];
+
+    const totalCredits = courses.reduce(
+      (sum, course) => sum + course.credits,
+      0
+    );
+
+    const courseRows = document.getElementById("courseRows");
+
+    // Generate all course rows and grade dropdowns.
+    function renderCourses() {
+      courseRows.innerHTML = courses.map((course, index) => `
+        <tr>
+          <td>
+            <span class="course-code">${course.code}</span>
+            <span class="course-type">${course.type}</span>
+          </td>
+
+          <td>${course.name}</td>
+
+          <td class="credit">${course.credits.toFixed(2)}</td>
+
+          <td>
+            <select
+              class="grade-select"
+              id="grade-${index}"
+              aria-label="Select grade for ${course.code}"
+            >
+              <option value="">Choose grade</option>
+              ${gradeScale.map(grade => `
+                <option value="${grade.points}">
+                  ${grade.label}
+                </option>
+              `).join("")}
+            </select>
+          </td>
+
+          <td class="weighted" id="points-${index}">—</td>
+        </tr>
+      `).join("");
+
+      document.querySelectorAll(".grade-select").forEach(select => {
+        select.addEventListener("change", calculateGPA);
+      });
+
+      document.getElementById("totalCredits").textContent =
+        totalCredits.toFixed(2);
+    }
+
+    // Calculate GPA using only the courses with selected grades.
+    function calculateGPA() {
+      let weightedPoints = 0;
+      let gradedCredits = 0;
+      let selectedCourses = 0;
+
+      courses.forEach((course, index) => {
+        const gradeValue = document.getElementById(
+          `grade-${index}`
+        ).value;
+
+        const pointsCell = document.getElementById(`points-${index}`);
+
+        if (gradeValue === "") {
+          pointsCell.textContent = "—";
+          return;
+        }
+
+        const gradePoints = Number(gradeValue);
+        const coursePoints = gradePoints * course.credits;
+
+        weightedPoints += coursePoints;
+        gradedCredits += course.credits;
+        selectedCourses++;
+
+        pointsCell.textContent = coursePoints.toFixed(2);
+      });
+
+      const gpa = gradedCredits > 0
+        ? weightedPoints / gradedCredits
+        : null;
+
+      const allCoursesSelected = selectedCourses === courses.length;
+
+      // Update summary cards.
+      document.getElementById("selectedCount").textContent =
+        `${selectedCourses} / ${courses.length}`;
+
+      document.getElementById("gradeProgress").textContent =
+        `${selectedCourses} / ${courses.length} graded`;
+
+      document.getElementById("totalWeighted").textContent =
+        weightedPoints.toFixed(2);
+
+      document.getElementById("semesterGpa").textContent =
+        allCoursesSelected && gpa !== null
+          ? gpa.toFixed(2)
+          : "—";
+
+      document.getElementById("gpaStatus").textContent =
+        allCoursesSelected
+          ? "All 7 courses included in the final result."
+          : "Select all 7 grades to reveal your final GPA.";
+
+      // Update the result message.
+      const resultMessage = document.getElementById("resultMessage");
+
+      if (selectedCourses === 0) {
+        resultMessage.textContent =
+          "Select your grades to calculate your semester GPA.";
+      } else if (!allCoursesSelected) {
+        resultMessage.textContent =
+          `Current GPA across ${selectedCourses} selected course(s): ` +
+          `${gpa.toFixed(2)}. Select the remaining grades to calculate ` +
+          "your final semester GPA using all 19.25 credits.";
+      } else {
+        resultMessage.textContent =
+          `Your final semester GPA is ${gpa.toFixed(2)} out of 4.00. ` +
+          `Total credits: ${totalCredits.toFixed(2)}. ` +
+          `Total weighted points: ${weightedPoints.toFixed(2)}.`;
+      }
+    }
+
+    // Clear all grades and return the calculator to its initial state.
+    function resetCalculator() {
+      document.querySelectorAll(".grade-select").forEach(select => {
+        select.value = "";
+      });
+
+      calculateGPA();
+    }
+
+    document.getElementById("calculateBtn").addEventListener(
+      "click",
+      calculateGPA
+    );
+
+    document.getElementById("resetBtn").addEventListener(
+      "click",
+      resetCalculator
+    );
+
+    // Initialize the calculator.
+    renderCourses();
+    calculateGPA();
+  </script>
+</body>
+</html>
